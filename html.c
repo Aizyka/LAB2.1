@@ -152,7 +152,9 @@ void htmlParse(Refrigerator** refrigerators, int* size) {
                 }
             }
             else if(contains(typeBuffer, "Количество компрессоров")) {
-                sscanf(getLeft(buffer), "%d", &compressorCount);
+                char* gl = getLeft(buffer);
+                sscanf(gl, "%d", &compressorCount);
+                free(gl);
             }
             else if(contains(typeBuffer, "Класс энергопотребления")) {
                 if(contains(buffer, "A++")) {
@@ -169,7 +171,9 @@ void htmlParse(Refrigerator** refrigerators, int* size) {
                 }
             }
             else if(contains(typeBuffer, "Общий полезный объем")) {
-                sscanf(getLeft(buffer), "%f", &capacity);
+                char* gl = getLeft(buffer);
+                sscanf(gl, "%f", &capacity);
+                free(gl);
             }
             else if(contains(typeBuffer, "Система No Frost")) {
                 if(contains(buffer, "есть")) {
@@ -177,13 +181,19 @@ void htmlParse(Refrigerator** refrigerators, int* size) {
                 }
             }
             else if(contains(typeBuffer, "Высота")) {
-                sscanf(getLeft(buffer), "%f", &height);
+                char* gl = getLeft(buffer);
+                sscanf(gl, "%f", &height);
+                free(gl);
             }
             else if(contains(typeBuffer, "Ширина")) {
-                sscanf(getLeft(buffer), "%f", &width);
+                char* gl = getLeft(buffer);
+                sscanf(gl, "%f", &width);
+                free(gl);
             }
             else if(contains(typeBuffer, "Количество отделений морозильной камеры")) {
-                sscanf(getLeft(buffer), "%d", &cameraCount);
+                char* gl = getLeft(buffer);
+                sscanf(gl, "%d", &cameraCount);
+                free(gl);
             }
             else if(contains(typeBuffer, "Цвет")) {
                 snprintf(color, sizeof(color), "%s", buffer);

@@ -87,7 +87,7 @@ void removeSpaces(char *str) {
     str[j] = '\0';
 }
 
-void parseContent(char* ptr, char* localEnd, Refrigerator** refrigerators, int* size, int currPos) {
+void parseContent(char* ptr, const char* localEnd, Refrigerator** refrigerators, int currPos) {
     char name[100]; float price = 0.0f; int controlType = 0; int compressorCount = 0; int energyClass = 0; float capacity = 0.0f; int noFrost = 0; float height = 0.0f; float width = 0.0f; int cameraCount = 0; char color[25];
     char buffer[1000]; char typeBuffer[1000];
     ptr = findString(ptr, "<span class=\"result__name\">");
@@ -193,7 +193,7 @@ void htmlParse(Refrigerator** refrigerators, int* size) {
         if (ptr == NULL)
             break;
         char* localEnd = findString(ptr, "</li>");
-        parseContent(ptr,localEnd,refrigerators,size,currPos);
+        parseContent(ptr,localEnd,refrigerators,currPos);
         currPos++;
         ptr = localEnd;
     }

@@ -60,14 +60,14 @@ void fillArray(Refrigerator** arr, int* sizeArr) {
         printf("Struct %d\n", i);
         printf("Name: ");
         scanf("%99s", name);
-        price = getint_m("Price: ", 0);
+        price = getfloat_m("Price: ", 0);
         controlType = getint_mm("Control Type(1-Electric Sensor,2-Electric Button,3-Mechanic): ", 1, 3);
         compressorCount = getint_m("Compressor Count: ", 1);
         energyClass = getint_mm("Energy Class(1-A++,2-A+,3-A,4-E): ", 1, 4);
-        capacity = getint_m("Capacity: ", 0);
+        capacity = getfloat_m("Capacity: ", 0);
         noFrost = getint_mm("No Frost: ", 0, 1);
-        height = getint_m("Height: ", 0);
-        width = getint_m("Width: ", 0);
+        height = getfloat_m("Height: ", 0);
+        width = getfloat_m("Width: ", 0);
         cameraCount = getint_m("Camera count: ", 0);
         printf("Color: ");
         scanf("%24s", color);

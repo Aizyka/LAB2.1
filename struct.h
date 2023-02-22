@@ -18,7 +18,6 @@ enum EnergyClass {
 
 
 typedef struct {
-
     char name[100];
     float price;
     enum ControlType controlType;

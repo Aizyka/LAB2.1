@@ -11,4 +11,7 @@ void sort(Refrigerator * arr, int size);
 int getint_mm(char* msg, int min, int max);
 int getint_m(char* msg, int min);
 int getint(char* msg);
+float getfloat_mm(char* msg, float min, float max);
+float getfloat_m(char* msg, float min);
+float getfloat(char* msg);
 #endif //LAB2_1_DEFINITIONS_H

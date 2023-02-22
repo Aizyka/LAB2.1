@@ -59,8 +59,8 @@ void getTagText(char *tag, char *buffer) {
 char* getLeft(const char* str) {
     int sub = 0;
     char nbsp[6] = "&nbsp;";
-    int j;
-    for(int i = 0; str[i]; i++) {
+    int j; int i;
+    for(i = 0; str[i]; i++) {
         if(str[i] == '&' || str[i] == ' ') {
             for(j = 0; j < 6 && str[i+j] != nbsp[j]; j++);
             if(j == 6 || str[i] == ' ')
@@ -70,6 +70,8 @@ char* getLeft(const char* str) {
             }
         }
     }
+    if(sub == 0)
+        sub = i;
     char* buf = (char*)malloc((sub+1)*sizeof(char));
     strncpy(buf, str, sub);
     buf[sub] = '\0';
@@ -85,8 +87,89 @@ void removeSpaces(char *str) {
     str[j] = '\0';
 }
 
+void parseContent(char* ptr, char* localEnd, Refrigerator** refrigerators, int* size, int currPos) {
+    char name[100]; float price = 0.0f; int controlType = 0; int compressorCount = 0; int energyClass = 0; float capacity = 0.0f; int noFrost = 0; float height = 0.0f; float width = 0.0f; int cameraCount = 0; char color[25];
+    char buffer[1000]; char typeBuffer[1000];
+    ptr = findString(ptr, "<span class=\"result__name\">");
+    getTagText(ptr, buffer);
+    snprintf(name, sizeof(name), "%s", buffer);
+    char *descPtr = findString(ptr, "<td class='result__attr_var");
+    while(descPtr != NULL && descPtr < localEnd) {
+        getTagText(descPtr, typeBuffer);
+
+        descPtr = findString(descPtr, "<td class='result__attr_val");
+        getTagText(descPtr, buffer);
+
+        if(contains(typeBuffer, "Тип управления")) {
+            if(contains(buffer, "механическое")) {
+                controlType = Mechanic;
+            }
+            else if(contains(buffer, "электронное кнопочное")) {
+                controlType = ElectricButton;
+            }
+            else if(contains(buffer, "электронное сенсорное")) {
+                controlType = ElectricSensor;
+            }
+        }
+        else if(contains(typeBuffer, "Количество компрессоров")) {
+            printf("%s", buffer);
+            char* gl = getLeft(buffer);
+            sscanf(gl, "%d", &compressorCount);
+            free(gl);
+        }
+        else if(contains(typeBuffer, "Класс энергопотребления")) {
+            if(contains(buffer, "A++")) {
+                energyClass = APP;
+            }
+            else if(contains(buffer, "A+")) {
+                energyClass = AP;
+            }
+            else if(contains(buffer, "A")) {
+                energyClass = A;
+            }
+            else if(contains(buffer, "E")) {
+                energyClass = E;
+            }
+        }
+        else if(contains(typeBuffer, "Общий полезный объем")) {
+            char* gl = getLeft(buffer);
+            sscanf(gl, "%f", &capacity);
+            free(gl);
+        }
+        else if(contains(typeBuffer, "Система No Frost")) {
+            if(contains(buffer, "есть")) {
+                noFrost = 1;
+            }
+        }
+        else if(contains(typeBuffer, "Высота")) {
+            char* gl = getLeft(buffer);
+            sscanf(gl, "%f", &height);
+            free(gl);
+        }
+        else if(contains(typeBuffer, "Ширина")) {
+            char* gl = getLeft(buffer);
+            sscanf(gl, "%f", &width);
+            free(gl);
+        }
+        else if(contains(typeBuffer, "Количество отделений морозильной камеры")) {
+            char* gl = getLeft(buffer);
+            sscanf(gl, "%d", &cameraCount);
+            free(gl);
+        }
+        else if(contains(typeBuffer, "Цвет")) {
+            snprintf(color, sizeof(color), "%s", buffer);
+        }
+        descPtr = findString(descPtr, "<td class='result__attr_var");
+    }
+    ptr = findString(ptr, "<span data-code=\"");
+    getTagText(ptr, buffer);
+    removeSpaces(buffer);
+    sscanf(buffer, "%f", &price);
+    (*refrigerators)[currPos] = init(name, price,controlType,compressorCount,energyClass,capacity,noFrost,height,width,cameraCount,color);
+}
+
 void htmlParse(Refrigerator** refrigerators, int* size) {
-    char html[1000000]; char *ptr; char *start; const char *end; char buffer[1000]; char typeBuffer[1000];
+    char html[1000000]; char *ptr; char *start; const char *end;
 
     FILE *fp = fopen("/Users/aizyka/Documents/GitHub/BSUIR/ОАиП/LAB2.1/test.html", "r");
     if (fp == NULL) {
@@ -106,86 +189,11 @@ void htmlParse(Refrigerator** refrigerators, int* size) {
     *refrigerators = (Refrigerator*) calloc(60, sizeof(Refrigerator));
     int currPos = 0;
     while (ptr < end) {
-        char name[100]; float price = 0.0f; int controlType = 0; int compressorCount = 0; int energyClass = 0; float capacity = 0.0f; int noFrost = 0; float height = 0.0f; float width = 0.0f; int cameraCount = 0; char color[25];
         ptr = findString(ptr, "<li class=\"result__item cr-result__full");
         if (ptr == NULL)
             break;
         char* localEnd = findString(ptr, "</li>");
-
-        ptr = findString(ptr, "<span class=\"result__name\">");
-        getTagText(ptr, buffer);
-        snprintf(name, sizeof(name), "%s", buffer);
-        char *descPtr = findString(ptr, "<td class='result__attr_var");
-        while(descPtr != NULL && descPtr < localEnd) {
-            getTagText(descPtr, typeBuffer);
-
-            descPtr = findString(descPtr, "<td class='result__attr_val");
-            getTagText(descPtr, buffer);
-            if(contains(typeBuffer, "Тип управления")) {
-                if(contains(buffer, "механическое")) {
-                    controlType = Mechanic;
-                }
-                else if(contains(buffer, "электронное кнопочное")) {
-                    controlType = ElectricButton;
-                }
-                else if(contains(buffer, "электронное сенсорное")) {
-                    controlType = ElectricSensor;
-                }
-            }
-            else if(contains(typeBuffer, "Количество компрессоров")) {
-                char* gl = getLeft(buffer);
-                sscanf(gl, "%d", &compressorCount);
-                free(gl);
-            }
-            else if(contains(typeBuffer, "Класс энергопотребления")) {
-                if(contains(buffer, "A++")) {
-                    energyClass = APP;
-                }
-                else if(contains(buffer, "A+")) {
-                    energyClass = AP;
-                }
-                else if(contains(buffer, "A")) {
-                    energyClass = A;
-                }
-                else if(contains(buffer, "E")) {
-                    energyClass = E;
-                }
-            }
-            else if(contains(typeBuffer, "Общий полезный объем")) {
-                char* gl = getLeft(buffer);
-                sscanf(gl, "%f", &capacity);
-                free(gl);
-            }
-            else if(contains(typeBuffer, "Система No Frost")) {
-                if(contains(buffer, "есть")) {
-                    noFrost = 1;
-                }
-            }
-            else if(contains(typeBuffer, "Высота")) {
-                char* gl = getLeft(buffer);
-                sscanf(gl, "%f", &height);
-                free(gl);
-            }
-            else if(contains(typeBuffer, "Ширина")) {
-                char* gl = getLeft(buffer);
-                sscanf(gl, "%f", &width);
-                free(gl);
-            }
-            else if(contains(typeBuffer, "Количество отделений морозильной камеры")) {
-                char* gl = getLeft(buffer);
-                sscanf(gl, "%d", &cameraCount);
-                free(gl);
-            }
-            else if(contains(typeBuffer, "Цвет")) {
-                snprintf(color, sizeof(color), "%s", buffer);
-            }
-            descPtr = findString(descPtr, "<td class='result__attr_var");
-        }
-        ptr = findString(ptr, "<span data-code=\"");
-        getTagText(ptr, buffer);
-        removeSpaces(buffer);
-        sscanf(buffer, "%f", &price);
-        (*refrigerators)[currPos] = init(name, price,controlType,compressorCount,energyClass,capacity,noFrost,height,width,cameraCount,color);
+        parseContent(ptr,localEnd,refrigerators,size,currPos);
         currPos++;
         ptr = localEnd;
     }

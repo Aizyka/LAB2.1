@@ -40,13 +40,7 @@ void showArray(Refrigerator* array, int count) {
 }
 
 void fillArray(Refrigerator** arr, int* sizeArr) {
-    printf("Enter size: ");
-    int size;
-    while(!scanf("%d", &size) || size < 1) {
-        printf("Invalid size!\n");
-        rewind(stdin);
-        printf("Enter size: ");
-    }
+    int size = getint_m("Enter size: ", 1);
     *arr = createArray(size);
     *sizeArr = size;
 
@@ -66,60 +60,15 @@ void fillArray(Refrigerator** arr, int* sizeArr) {
         printf("Struct %d\n", i);
         printf("Name: ");
         scanf("%99s", name);
-        printf("Price: ");
-        while(!scanf("%f", &price) || price < 0) {
-            printf("Invalid price!\n");
-            rewind(stdin);
-            printf("Price: ");
-        }
-        printf("Control Type(1-Electric Sensor,2-Electric Button,3-Mechanic): ");
-        while(!scanf("%d", &controlType) || controlType < 1 || controlType > 3) {
-            printf("Invalid control type!\n");
-            rewind(stdin);
-            printf("Control Type: ");
-        }
-        printf("Compressor Count: ");
-        while(!scanf("%d", &compressorCount) || compressorCount < 1) {
-            printf("Invalid price!\n");
-            rewind(stdin);
-            printf("Price: ");
-        }
-        printf("Energy Class(1-A++,2-A+,3-A,4-E): ");
-        while(!scanf("%d", &energyClass) || controlType < 1 || controlType > 4) {
-            printf("Invalid energy class!\n");
-            rewind(stdin);
-            printf("Energy Class: ");
-        }
-        printf("Capacity: ");
-        while(!scanf("%f", &capacity) || capacity < 0) {
-            printf("Invalid capacity!\n");
-            rewind(stdin);
-            printf("Capacity: ");
-        }
-        printf("No Frost: ");
-        while(!scanf("%d", &noFrost) || noFrost < 0 || noFrost > 1) {
-            printf("Invalid value!\n");
-            rewind(stdin);
-            printf("No Frost: ");
-        }
-        printf("Height: ");
-        while(!scanf("%f", &height) || height < 0) {
-            printf("Invalid height!\n");
-            rewind(stdin);
-            printf("Height: ");
-        }
-        printf("Width: ");
-        while(!scanf("%f", &width) || width < 0) {
-            printf("Invalid width!\n");
-            rewind(stdin);
-            printf("Width: ");
-        }
-        printf("Camera count: ");
-        while(!scanf("%d", &cameraCount) || cameraCount < 0) {
-            printf("Invalid value!\n");
-            rewind(stdin);
-            printf("Camera count: ");
-        }
+        price = getint_m("Price: ", 0);
+        controlType = getint_mm("Control Type(1-Electric Sensor,2-Electric Button,3-Mechanic): ", 1, 3);
+        compressorCount = getint_m("Compressor Count: ", 1);
+        energyClass = getint_mm("Energy Class(1-A++,2-A+,3-A,4-E): ", 1, 4);
+        capacity = getint_m("Capacity: ", 0);
+        noFrost = getint_mm("No Frost: ", 0, 1);
+        height = getint_m("Height: ", 0);
+        width = getint_m("Width: ", 0);
+        cameraCount = getint_m("Camera count: ", 0);
         printf("Color: ");
         scanf("%24s", color);
         (*arr)[i] = init(name, price,controlType,compressorCount,energyClass,capacity,noFrost,height,width,cameraCount,color);

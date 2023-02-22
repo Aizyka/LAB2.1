@@ -8,4 +8,7 @@ void showArray(Refrigerator* array, int count);
 void fillArray(Refrigerator** arr, int* sizeArr);
 void htmlParse(Refrigerator** refrigerators, int* size);
 void sort(Refrigerator * arr, int size);
+int getint_mm(char* msg, int min, int max);
+int getint_m(char* msg, int min);
+int getint(char* msg);
 #endif //LAB2_1_DEFINITIONS_H

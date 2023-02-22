@@ -48,35 +48,35 @@ int compareNoFrost(const Refrigerator * a, const Refrigerator * b) {
         return 1;
     return 0;
 }
-int compareHeight(const Refrigerator * a, Refrigerator * b) {
+int compareHeight(const Refrigerator * a, const Refrigerator * b) {
     if(a->height<b->height)
         return -1;
     else if(a->height>b->height)
         return 1;
     return 0;
 }
-int compareWidth(const Refrigerator * a, Refrigerator * b) {
+int compareWidth(const Refrigerator * a, const Refrigerator * b) {
     if(a->width<b->width)
         return -1;
     else if(a->width>b->width)
         return 1;
     return 0;
 }
-int compareCamerasCount(const Refrigerator * a, Refrigerator * b) {
+int compareCamerasCount(const Refrigerator * a, const Refrigerator * b) {
     if(a->cameraCount<b->cameraCount)
         return -1;
     else if(a->cameraCount>b->cameraCount)
         return 1;
     return 0;
 }
-int compareColor(const Refrigerator* a, Refrigerator* b) {
+int compareColor(const Refrigerator* a, const Refrigerator* b) {
     return strcmp(a->color, b->color);
 }
 
 int secondSort(int (*compareTypes[11]) (Refrigerator*, Refrigerator*), Refrigerator* a, Refrigerator* b) {
     int comp = 0;
-    for(int i = 0; i < 11 && comp == 0; i++) {
-        if(compareTypes[i] == NULL) break;
+    for(int i = 0; i < 11; i++) {
+        if(compareTypes[i] == NULL || comp != 0) break;
         comp = ((*compareTypes[i])(a, b));
     }
     return comp;

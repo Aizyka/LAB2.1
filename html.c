@@ -112,7 +112,6 @@ void parseContent(char* ptr, const char* localEnd, Refrigerator** refrigerators,
             }
         }
         else if(contains(typeBuffer, "Количество компрессоров")) {
-            printf("%s", buffer);
             char* gl = getLeft(buffer);
             sscanf(gl, "%d", &compressorCount);
             free(gl);

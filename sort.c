@@ -94,6 +94,17 @@ void sort(Refrigerator * arr, int size) {
         rewind(stdin);
         printf("Choose sort count: ");
     }
+    printf("0 - Name\n"
+           "1 - Price\n"
+           "2 - Control Type\n"
+           "3 - Compressor Count\n"
+           "4 - Energy Class\n"
+           "5 - Capacity\n"
+           "6 - No Frost\n"
+           "7 - Height\n"
+           "8 - Width\n"
+           "9 - Camera Count\n"
+           "10 - Color\n");
     int (*secondTypes[11]) (Refrigerator*, Refrigerator*);
     for(int i = 0; i < count; i++) {
         int ss;

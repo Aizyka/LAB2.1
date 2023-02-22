@@ -3,15 +3,12 @@
 #include <string.h>
 #include "definitions.h"
 
-char *findString(char *str, char *substr) {
-    int i, j;
+char *findString(char *str, const char *substr) {
+    int j;
 
-    for(i = 0; str[i]; i++) {
+    for(int i = 0; str[i]; i++) {
         if(str[i] == substr[0]) {
-            for(j = 0; substr[j]; j++) {
-                if(str[i+j] != substr[j])
-                    break;
-            }
+            for(j = 0; substr[j] && str[i+j] == substr[j]; j++);
             if(!substr[j])
                 return &str[i];
         }
@@ -20,15 +17,12 @@ char *findString(char *str, char *substr) {
     return NULL;
 }
 
-int getCount(char *str, char *substr) {
-    int i, j, count = 0;
+int getCount(const char *str, const char *substr) {
+    int j; int count = 0;
 
-    for(i = 0; str[i]; i++) {
+    for(int i = 0; str[i]; i++) {
         if(str[i] == substr[0]) {
-            for(j = 0; substr[j]; j++) {
-                if(str[i+j] != substr[j])
-                    break;
-            }
+            for(j = 0; substr[j] && str[i+j] == substr[j]; j++);
             if(!substr[j]) {
                 count++;
             }
@@ -38,15 +32,12 @@ int getCount(char *str, char *substr) {
     return count;
 }
 
-int contains(char *str, char *substr) {
-    int i, j;
+int contains(const char *str, const char *substr) {
+    int j;
 
-    for(i = 0; str[i]; i++) {
+    for(int i = 0; str[i]; i++) {
         if(str[i] == substr[0]) {
-            for(j = 0; substr[j]; j++) {
-                if(str[i+j] != substr[j])
-                    break;
-            }
+            for(j = 0; substr[j] && str[i+j] == substr[j]; j++);
             if(!substr[j]) {
                 return 1;
             }
@@ -57,7 +48,7 @@ int contains(char *str, char *substr) {
 }
 
 void getTagText(char *tag, char *buffer) {
-    char *ptr1, *ptr2;
+    char *ptr1; char *ptr2;
 
     ptr1 = findString(tag, ">") + 1;
     ptr2 = findString(ptr1, "<");
@@ -65,21 +56,15 @@ void getTagText(char *tag, char *buffer) {
     buffer[ptr2-ptr1] = '\0';
 }
 
-char* getLeft(char* str) {
-    int sub = strlen(str);
+char* getLeft(const char* str) {
+    int sub = 0;
     char nbsp[6] = "&nbsp;";
     int j;
-    for(int i = 0; i < sub; i++) {
-        if(str[i] == ' ') {
-            sub = i;
-            break;
-        }
-        else if(str[i] == '&') {
-            for(j = 0; j < 6; j++) {
-                if(str[i+j] != nbsp[j])
-                    break;
+    for(int i = 0; str[i]; i++) {
+        if(str[i] == '&' || str[i] == ' ') {
+            for(j = 0; j < 6 && str[i+j] != nbsp[j]; j++) {
             }
-            if(j == 6)
+            if(j == 6 || str[i] == ' ')
             {
                 sub = i;
                 break;
@@ -92,8 +77,8 @@ char* getLeft(char* str) {
     return buf;
 }
 void removeSpaces(char *str) {
-    int i, j;
-    for (i = 0, j = 0; str[i]; i++) {
+    int j;
+    for (int i = 0, j = 0; str[i]; i++) {
         if (str[i] != ' ') {
             str[j++] = str[i];
         }
@@ -102,7 +87,7 @@ void removeSpaces(char *str) {
 }
 
 void htmlParse(Refrigerator** refrigerators, int* size) {
-    char html[1000000], *ptr, *start, *end, buffer[1000], typeBuffer[1000];
+    char html[1000000]; char *ptr; char *start; char *end; char buffer[1000]; char typeBuffer[1000];
 
     FILE *fp = fopen("/Users/aizyka/Documents/GitHub/BSUIR/ОАиП/LAB2.1/test.html", "r");
     if (fp == NULL) {
@@ -130,12 +115,10 @@ void htmlParse(Refrigerator** refrigerators, int* size) {
 
         ptr = findString(ptr, "<span class=\"result__name\">");
         getTagText(ptr, buffer);
-        //printf("Title: %s\n", buffer);
         snprintf(name, sizeof(name), "%s", buffer);
         char *descPtr = findString(ptr, "<td class='result__attr_var");
         while(descPtr != NULL && descPtr < localEnd) {
             getTagText(descPtr, typeBuffer);
-            //printf("Var: %s\n", typeBuffer);
 
             descPtr = findString(descPtr, "<td class='result__attr_val");
             getTagText(descPtr, buffer);
@@ -203,7 +186,6 @@ void htmlParse(Refrigerator** refrigerators, int* size) {
         ptr = findString(ptr, "<span data-code=\"");
         getTagText(ptr, buffer);
         removeSpaces(buffer);
-        //printf("Price: %s\n", buffer);
         sscanf(buffer, "%f", &price);
         (*refrigerators)[currPos] = init(name, price,controlType,compressorCount,energyClass,capacity,noFrost,height,width,cameraCount,color);
         currPos++;

@@ -83,10 +83,10 @@ int secondSort(int (*compareTypes[11]) (Refrigerator*, Refrigerator*), Refrigera
 }
 
 void sort(Refrigerator * arr, int size) {
-    int (*compareTypes[11]) (Refrigerator*, Refrigerator*) = {compareName, comparePrice, compareControlType,
-                                                              compareCompressorsCount, compareEnergyClass, compareCapacity,
-                                                              compareNoFrost, compareHeight, compareWidth,
-                                                              compareCamerasCount, compareColor};
+    int (*compareTypes[11]) (Refrigerator*, Refrigerator*) = {&compareName, &comparePrice, &compareControlType,
+                                                              &compareCompressorsCount, &compareEnergyClass, &compareCapacity,
+                                                              &compareNoFrost, &compareHeight, &compareWidth,
+                                                              &compareCamerasCount, &compareColor};
     int count;
     printf("Choose sort count: ");
     while(!scanf("%d", &count) || count < 1 || count > 11) {

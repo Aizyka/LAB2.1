@@ -122,7 +122,7 @@ void htmlParse(Refrigerator** refrigerators, int* size) {
     *refrigerators = (Refrigerator*) calloc(60, sizeof(Refrigerator));
     int currPos = 0;
     while (ptr < end) {
-        char name[100]; float price; int controlType; int compressorCount; int energyClass; float capacity; int noFrost; float height; float width; int cameraCount; char color[25];
+        char name[100]; float price = 0.0f; int controlType = 0; int compressorCount = 0; int energyClass = 0; float capacity = 0.0f; int noFrost = 0; float height = 0.0f; float width = 0.0f; int cameraCount = 0; char color[25];
         ptr = findString(ptr, "<li class=\"result__item cr-result__full");
         if (ptr == NULL)
             break;

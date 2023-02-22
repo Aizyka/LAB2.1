@@ -34,9 +34,10 @@ void menu() {
                "3 - Sort by fields\n"
                "4 - Remove struct from array\n"
                "5 - Parse HTML\n"
+               "6 - Exit\n"
                "Your choice: ");
         int choice;
-        while(!scanf("%d", &choice) || choice < 1 || choice > 5) {
+        while(!scanf("%d", &choice) || choice < 1 || choice > 6) {
             printf("Invalid choice! Valid choice [1-5]\n");
             rewind(stdin);
             printf("Your choice: ");
@@ -66,6 +67,9 @@ void menu() {
             case 5:
                 htmlParse(&refrigerators,&size);
                 break;
+            default:
+                if(size > 0) free(refrigerators);
+                return;
         }
     }
 }

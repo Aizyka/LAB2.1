@@ -3,37 +3,73 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-int compareName(Refrigerator* a, Refrigerator* b) {
+int compareName(const Refrigerator* a, const Refrigerator* b) {
     return strcmp(a->name, b->name);
 }
-int comparePrice(Refrigerator * a, Refrigerator * b) {
-    return (a->price<b->price) ? -1 : ((a->price>b->price) ? 1 : 0);
+int comparePrice(const Refrigerator * a, const Refrigerator * b) {
+    if(a->price<b->price)
+        return -1;
+    else if(a->price>b->price)
+        return 1;
+    return 0;
 }
-int compareControlType(Refrigerator * a, Refrigerator * b) {
-    return (a->controlType<b->controlType) ? -1 : ((a->controlType>b->controlType) ? 1 : 0);
+int compareControlType(const Refrigerator * a, const Refrigerator * b) {
+    if(a->controlType<b->controlType)
+        return -1;
+    else if(a->controlType>b->controlType)
+        return 1;
+    return 0;
 }
-int compareCompressorsCount(Refrigerator * a, Refrigerator * b) {
-    return (a->compressorCount<b->compressorCount) ? -1 : ((a->compressorCount>b->compressorCount) ? 1 : 0);
+int compareCompressorsCount(const Refrigerator * a, const Refrigerator * b) {
+    if(a->compressorCount<b->compressorCount)
+        return -1;
+    else if(a->compressorCount>b->compressorCount)
+        return 1;
+    return 0;
 }
-int compareEnergyClass(Refrigerator * a, Refrigerator * b) {
-    return (a->energyClass<b->energyClass) ? -1 : ((a->energyClass>b->energyClass) ? 1 : 0);
+int compareEnergyClass(const Refrigerator * a, const Refrigerator * b) {
+    if(a->energyClass<b->energyClass)
+        return -1;
+    else if(a->energyClass>b->energyClass)
+        return 1;
+    return 0;
 }
-int compareCapacity(Refrigerator * a, Refrigerator * b) {
-    return (a->capacity<b->capacity) ? -1 : ((a->capacity>b->capacity) ? 1 : 0);
+int compareCapacity(const Refrigerator * a, const Refrigerator * b) {
+    if(a->capacity<b->capacity)
+        return -1;
+    else if(a->capacity>b->capacity)
+        return 1;
+    return 0;
 }
-int compareNoFrost(Refrigerator * a, Refrigerator * b) {
-    return (a->noFrost<b->noFrost) ? -1 : ((a->noFrost>b->noFrost) ? 1 : 0);
+int compareNoFrost(const Refrigerator * a, const Refrigerator * b) {
+    if(a->noFrost<b->noFrost)
+        return -1;
+    else if(a->noFrost>b->noFrost)
+        return 1;
+    return 0;
 }
-int compareHeight(Refrigerator * a, Refrigerator * b) {
-    return (a->height<b->height) ? -1 : ((a->height>b->height) ? 1 : 0);
+int compareHeight(const Refrigerator * a, Refrigerator * b) {
+    if(a->height<b->height)
+        return -1;
+    else if(a->height>b->height)
+        return 1;
+    return 0;
 }
-int compareWidth(Refrigerator * a, Refrigerator * b) {
-    return (a->width<b->width) ? -1 : ((a->width>b->width) ? 1 : 0);
+int compareWidth(const Refrigerator * a, Refrigerator * b) {
+    if(a->width<b->width)
+        return -1;
+    else if(a->width>b->width)
+        return 1;
+    return 0;
 }
-int compareCamerasCount(Refrigerator * a, Refrigerator * b) {
-    return (a->cameraCount<b->cameraCount) ? -1 : ((a->cameraCount>b->cameraCount) ? 1 : 0);
+int compareCamerasCount(const Refrigerator * a, Refrigerator * b) {
+    if(a->cameraCount<b->cameraCount)
+        return -1;
+    else if(a->cameraCount>b->cameraCount)
+        return 1;
+    return 0;
 }
-int compareColor(Refrigerator* a, Refrigerator* b) {
+int compareColor(const Refrigerator* a, Refrigerator* b) {
     return strcmp(a->color, b->color);
 }
 

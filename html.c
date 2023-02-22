@@ -48,7 +48,7 @@ int contains(const char *str, const char *substr) {
 }
 
 void getTagText(char *tag, char *buffer) {
-    char *ptr1; char *ptr2;
+    char *ptr1; const char *ptr2;
 
     ptr1 = findString(tag, ">") + 1;
     ptr2 = findString(ptr1, "<");
@@ -62,8 +62,7 @@ char* getLeft(const char* str) {
     int j;
     for(int i = 0; str[i]; i++) {
         if(str[i] == '&' || str[i] == ' ') {
-            for(j = 0; j < 6 && str[i+j] != nbsp[j]; j++) {
-            }
+            for(j = 0; j < 6 && str[i+j] != nbsp[j]; j++);
             if(j == 6 || str[i] == ' ')
             {
                 sub = i;
@@ -77,8 +76,8 @@ char* getLeft(const char* str) {
     return buf;
 }
 void removeSpaces(char *str) {
-    int j;
-    for (int i = 0, j = 0; str[i]; i++) {
+    int j = 0;
+    for (int i = 0; str[i]; i++) {
         if (str[i] != ' ') {
             str[j++] = str[i];
         }
@@ -87,7 +86,7 @@ void removeSpaces(char *str) {
 }
 
 void htmlParse(Refrigerator** refrigerators, int* size) {
-    char html[1000000]; char *ptr; char *start; char *end; char buffer[1000]; char typeBuffer[1000];
+    char html[1000000]; char *ptr; char *start; const char *end; char buffer[1000]; char typeBuffer[1000];
 
     FILE *fp = fopen("/Users/aizyka/Documents/GitHub/BSUIR/ОАиП/LAB2.1/test.html", "r");
     if (fp == NULL) {
@@ -122,7 +121,6 @@ void htmlParse(Refrigerator** refrigerators, int* size) {
 
             descPtr = findString(descPtr, "<td class='result__attr_val");
             getTagText(descPtr, buffer);
-            //printf("Value: %s\n", buffer);
             if(contains(typeBuffer, "Тип управления")) {
                 if(contains(buffer, "механическое")) {
                     controlType = Mechanic;
